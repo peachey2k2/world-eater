@@ -1,6 +1,6 @@
 #include "./game.hpp"
 
-extern "C" Mod init() {
+extern "C" Mod init(ModID p_modId) {
     ModInfo info = {
         .name = "World Eater",
         .version = "0.0.1",
@@ -14,6 +14,8 @@ extern "C" Mod init() {
         .initItems = initItems,
         .initBlocks = initBlocks,
     };
+
+    ID = p_modId;
 
     return mod;
 }
@@ -29,8 +31,8 @@ void initBlocks() {
     InitBlockInfo block {
         .name = "grass",
         .tooltip = "Grass",
-        .texture = "../texture.png",
+        .texture = "res/grass.png",
     };
-    wmac::blocks::add(block);
+    wmac::blocks::add(ID, block);
 }
 

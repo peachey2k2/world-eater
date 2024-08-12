@@ -1,9 +1,11 @@
 #pragma once
 
-#include "../misc/utils.hpp"
-#include "../misc/api.hpp"
+#include "utils.hpp"
+#include "api.hpp"
 
-extern "C" Mod init();
+ModID ID;
+
+extern "C" Mod init(ModID p_modId);
 
 void initFunctions(ApiFunctions &p_api);
 void initItems();

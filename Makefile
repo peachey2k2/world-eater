@@ -10,15 +10,15 @@ rwildcard = $(wildcard $1$2) $(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2
 platformpth = $(subst /,$(PATHSEP),$1)
 
 # Set global macros
-buildDir := ../../bin/mods
+buildDir := bin/mods
 modName := WorldEater
 sources := $(call rwildcard,./,*.cpp)
 objects := $(patsubst ./%, $(buildDir)/%, $(patsubst %.cpp, %.o, $(sources)))
 depends := $(patsubst %.o, %.d, $(objects))
 # compileFlags := -std=c++20 -I./include -I./src -I./include -g
-compileFlags := -std=c++20 -I ../../include -I ./src/misc -I -g -fPIC
+compileFlags := -std=c++20 -I ./include -I ./src -I -g -fPIC
 warnings := -Wall -Wextra -Wpedantic -Werror -Wno-narrowing -Wno-missing-field-initializers
-linkFlags = -shared -L lib/$(platform) -L ../../lib -l raylib -l noise
+linkFlags = -shared
 
 # Check for Windows
 ifeq ($(OS), Windows_NT)
@@ -59,15 +59,19 @@ else
 endif
 
 target := $(buildDir)/$(libName)
+modDir := ../out/mods/$(modName)
 
 # Lists phony targets for Makefile
 .PHONY: all clean
 
 all: $(target)
 
-# Link the program and create the executable
+# Link the program and create the shared library
 $(target): $(objects)
-	$(CXX) $(objects) -o $(target) $(linkFlags)
+	$(MKDIR) $(modDir)
+	$(CXX) $(objects) -o $(modDir)/$(libName) $(linkFlags)
+	rm -rf $(modDir)/res
+	cp -r ./res $(modDir)
 
 # Add all rules from dependency files
 -include $(depends)
