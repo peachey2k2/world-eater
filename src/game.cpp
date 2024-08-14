@@ -33,6 +33,6 @@ void initBlocks() {
         .tooltip = "Grass",
         .texture = "res/grass.png",
     };
-    wmac::blocks::add(ID, block);
+    wmac::blocks::add(block);
 }
 
